@@ -1,14 +1,4 @@
 const email = document.getElementById("email-preview")
-console.log(email)
-
-const emailObject = {
-    "subject": "Subject here",
-    "heading": "Heading here",
-    "bodyCopy": "Body copy here",
-    "cta": "CTA here",
-}
-
-renderEmail(emailObject)
 
 async function fetchChatWorker() {
     const messages = [
@@ -45,12 +35,25 @@ async function fetchChatWorker() {
             throw new Error(`Worker Error: ${data.error}`)
         }
         console.log(data.content)
+        const emailToSplit = data.content
+        const output = emailToSplit.split(/: |\n/)
+        console.log(output)
+        
+        const emailObject = {
+            "subject": `${output[1]}`,
+            "heading": `${output[4]}`,
+            "bodyCopy": `${output[7]}`,
+            "cta": `${output[10]}`,
+        }
+
+        renderEmail(emailObject)
+
     } catch (err) {
         console.error(err.message)
     }
 }
 
-// fetchChatWorker()
+fetchChatWorker()
 
 function renderEmail(elements) {
     email.innerHTML = `
@@ -60,3 +63,4 @@ function renderEmail(elements) {
     <button>${elements.cta}</button>
     `
 }
+
