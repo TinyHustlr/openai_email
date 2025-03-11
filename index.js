@@ -8,14 +8,14 @@ async function fetchChatWorker() {
         },
         {
             role: 'user',
-            content: `Write me email copy for the video editing platform Clipchamp. It needs to be in the following format:
+            content: `Write me email copy for the video editing platform Clipchamp presuading me to try it. It needs to be in the following format:
             
-            Subject line: 10 words or less
             Heading: 10 words of less
-            Body copy: 100 words or less
+            Body copy: 60 words or less
             CTA: 5 words or less
             
-            The copy should be upbeat, engaging and aimed at novice information workers. Do not include introductions such as "hello there"`
+            The copy should be upbeat, engaging and aimed at novice information workers. It should also include specific references to Clipchamp features to avoid sounding generic.
+            Do not include introductions such as "hello there"`
         }
     ]
     
@@ -39,14 +39,7 @@ async function fetchChatWorker() {
         const output = emailToSplit.split(/: |\n/)
         console.log(output)
         
-        const emailObject = {
-            "subject": `${output[1]}`,
-            "heading": `${output[4]}`,
-            "bodyCopy": `${output[7]}`,
-            "cta": `${output[10]}`,
-        }
-
-        renderEmail(emailObject)
+        renderEmail(output)
 
     } catch (err) {
         console.error(err.message)
@@ -56,11 +49,10 @@ async function fetchChatWorker() {
 fetchChatWorker()
 
 function renderEmail(elements) {
-    email.innerHTML = `
-    <p>${elements.subject}</p>
-    <h1>${elements.heading}</h1>
-    <p>${elements.bodyCopy}</p>
-    <button>${elements.cta}</button>
-    `
+    const headingElement = document.getElementById("heading-el");
+    const bodyElement = document.getElementById("body-el");
+    const CTAElement = document.getElementById("CTA-el");
+    headingElement.textContent = elements[1];
+    bodyElement.textContent = elements[4];
+    CTAElement.textContent = elements[7];
 }
-
